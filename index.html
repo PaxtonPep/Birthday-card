@@ -47,14 +47,14 @@
   }
 
   .overlay-title {
-    font-size:2.4rem;
+    font-size:2.3rem;
     font-weight:900;
-    margin-bottom:20px;
+    margin-bottom:18px;
     line-height:1.2;
   }
 
   .overlay-sub {
-    font-size:1.5rem;
+    font-size:1.4rem;
     opacity:0.95;
     font-weight:600;
   }
@@ -130,7 +130,7 @@
   <!-- BIG BOLD OVERLAY -->
   <div class="overlay" id="overlay">
     <div class="overlay-title">
-      Hope your birthday is <strong>plane awesome</strong> ✈️
+      Happy Birthday!<br>Hope your bday has been <strong>plane awesome</strong> ✈️
     </div>
     <div class="overlay-sub">
       Tap to reveal your surprise
@@ -188,40 +188,55 @@
     });
   }
 
-  /* CONFETTI SCRIPT */
-  const confettiCanvas = document.getElementById("confetti-canvas");
-  const ctx = confettiCanvas.getContext("2d");
-  let confettiPieces = [];
+  /* CONFETTI SCRIPT — START THEN STOP */
+  const canvas = document.getElementById("confetti-canvas");
+  const ctx = canvas.getContext("2d");
+  let confetti = [];
+  let spawnConfetti = true;
 
-  function resizeCanvas() {
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+  resize();
+  window.addEventListener("resize", resize);
 
   function startConfetti() {
-    for (let i = 0; i < 300; i++) {
-      confettiPieces.push({
-        x: Math.random() * confettiCanvas.width,
-        y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-        size: Math.random() * 8 + 4,
-        color: `hsl(${Math.random() * 360}, 100%, 60%)`,
-        speed: Math.random() * 3 + 2,
-        rotation: Math.random() * 360
-      });
-    }
+    spawnConfetti = true;
+
+    // Stop spawning after 2.5 seconds
+    setTimeout(() => {
+      spawnConfetti = false;
+    }, 2500);
+
     requestAnimationFrame(updateConfetti);
   }
 
   function updateConfetti() {
-    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    confettiPieces.forEach(p => {
+    // Spawn new confetti only while allowed
+    if (spawnConfetti) {
+      for (let i = 0; i < 8; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: -10,
+          size: Math.random() * 8 + 4,
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+          speed: Math.random() * 3 + 2,
+          rotation: Math.random() * 360
+        });
+      }
+    }
+
+    // Update existing confetti
+    confetti.forEach((p, i) => {
       p.y += p.speed;
       p.rotation += 5;
 
-      if (p.y > confettiCanvas.height) p.y = -10;
+      if (p.y > canvas.height + 20) {
+        confetti.splice(i, 1);
+      }
 
       ctx.save();
       ctx.translate(p.x, p.y);
@@ -231,7 +246,10 @@
       ctx.restore();
     });
 
-    requestAnimationFrame(updateConfetti);
+    // Keep animating until all confetti is gone
+    if (spawnConfetti || confetti.length > 0) {
+      requestAnimationFrame(updateConfetti);
+    }
   }
 </script>
 
