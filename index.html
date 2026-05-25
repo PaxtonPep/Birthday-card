@@ -30,7 +30,7 @@
   .overlay {
     position:absolute;
     inset:0;
-    background:#0d47a1; /* darker blue */
+    background:#0d1f4a; /* darker navy blue */
     display:flex;
     align-items:center;
     justify-content:center;
@@ -41,6 +41,7 @@
     transition:transform 0.45s ease;
     color:white;
     padding:20px;
+    text-align:center;
   }
   .overlay.hidden {
     transform:translateY(-100%);
@@ -90,8 +91,12 @@
 
   <!-- Slide-away surprise panel -->
   <div class="overlay" id="overlay">
-    <div style="font-size:1.4rem; margin-bottom:10px;">Hope your birthday is <strong>plane awesome</strong> ✈️</div>
-    <div style="font-size:1.1rem; opacity:0.9;">Tap to reveal your surprise</div>
+    <div style="font-size:1.4rem; margin-bottom:12px;">
+      Hope your birthday is <strong>plane awesome</strong> ✈️
+    </div>
+    <div style="font-size:1.15rem; opacity:0.9;">
+      Tap to reveal your surprise
+    </div>
   </div>
 
   <h1>Happy Birthday, Edric! 🎉</h1>
