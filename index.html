@@ -188,11 +188,11 @@
     });
   }
 
-  /* CONFETTI SCRIPT — START THEN STOP */
+  /* CONFETTI SCRIPT — CENTER STOPS, SIDES FOREVER */
   const canvas = document.getElementById("confetti-canvas");
   const ctx = canvas.getContext("2d");
   let confetti = [];
-  let spawnConfetti = true;
+  let spawnCenter = true;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -202,11 +202,11 @@
   window.addEventListener("resize", resize);
 
   function startConfetti() {
-    spawnConfetti = true;
+    spawnCenter = true;
 
-    // Stop spawning after 2.5 seconds
+    // Stop center confetti after 2.5 seconds
     setTimeout(() => {
-      spawnConfetti = false;
+      spawnCenter = false;
     }, 2500);
 
     requestAnimationFrame(updateConfetti);
@@ -215,11 +215,11 @@
   function updateConfetti() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Spawn new confetti only while allowed
-    if (spawnConfetti) {
+    // Spawn center confetti (temporary)
+    if (spawnCenter) {
       for (let i = 0; i < 8; i++) {
         confetti.push({
-          x: Math.random() * canvas.width,
+          x: Math.random() * canvas.width * 0.6 + canvas.width * 0.2, // center 60%
           y: -10,
           size: Math.random() * 8 + 4,
           color: `hsl(${Math.random() * 360}, 100%, 60%)`,
@@ -227,6 +227,20 @@
           rotation: Math.random() * 360
         });
       }
+    }
+
+    // Spawn side confetti (forever)
+    for (let i = 0; i < 2; i++) {
+      confetti.push({
+        x: Math.random() < 0.5
+          ? Math.random() * canvas.width * 0.15
+          : canvas.width - Math.random() * canvas.width * 0.15,
+        y: -10,
+        size: Math.random() * 8 + 4,
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+        speed: Math.random() * 3 + 2,
+        rotation: Math.random() * 360
+      });
     }
 
     // Update existing confetti
@@ -246,10 +260,7 @@
       ctx.restore();
     });
 
-    // Keep animating until all confetti is gone
-    if (spawnConfetti || confetti.length > 0) {
-      requestAnimationFrame(updateConfetti);
-    }
+    requestAnimationFrame(updateConfetti);
   }
 </script>
 
