@@ -30,13 +30,11 @@
   .overlay {
     position:absolute;
     inset:0;
-    background:#0d1f4a; /* darker navy blue */
+    background:#0b1d47; /* darker navy blue */
     display:flex;
     align-items:center;
     justify-content:center;
     flex-direction:column;
-    font-size:1.3rem;
-    font-weight:600;
     cursor:pointer;
     transition:transform 0.45s ease;
     color:white;
@@ -45,6 +43,17 @@
   }
   .overlay.hidden {
     transform:translateY(-100%);
+  }
+
+  .overlay-title {
+    font-size:1.8rem;
+    font-weight:700;
+    margin-bottom:14px;
+  }
+
+  .overlay-sub {
+    font-size:1.25rem;
+    opacity:0.95;
   }
 
   .code-box {
@@ -99,10 +108,10 @@
 
   <!-- Slide-away surprise panel -->
   <div class="overlay" id="overlay">
-    <div style="font-size:1.4rem; margin-bottom:12px;">
+    <div class="overlay-title">
       Hope your birthday is <strong>plane awesome</strong> ✈️
     </div>
-    <div style="font-size:1.15rem; opacity:0.9;">
+    <div class="overlay-sub">
       Tap to reveal your surprise
     </div>
   </div>
@@ -123,8 +132,9 @@
     <li>Go to the link:  
       <br><a href="https://redeem.microsoft.com" target="_blank">https://redeem.microsoft.com</a>
     </li>
-    <li>Sign in with your Microsoft account (same one used for MSFS 2020).</li>
-    <li>Click the box that says <strong>“Enter code”</strong>.</li>
+    <li>Or open the <strong>Microsoft Store app</strong> on your PC or Xbox.</li>
+    <li>Select <strong>Redeem</strong> or <strong>Use a code</strong>.</li>
+    <li>Select your <strong>gift card</strong> option if it asks.</li>
     <li>Paste or type the code above.</li>
     <li>Press <strong>Next</strong> and confirm to add the $20 to your account.</li>
   </ol>
