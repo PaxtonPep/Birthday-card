@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Happy Birthday Edric</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
   body {
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -11,7 +12,9 @@
     color:#e5e7eb;
     text-align:center;
     padding:40px 16px;
+    overflow-x:hidden;
   }
+
   .card {
     background:#1b2538;
     padding:30px 24px;
@@ -37,22 +40,23 @@
     color:white;
     padding:20px;
     text-align:center;
+    z-index:10;
   }
   .overlay.hidden {
     transform:translateY(-100%);
   }
 
   .overlay-title {
-    font-size:2.2rem;
-    font-weight:800;
-    margin-bottom:18px;
+    font-size:2.4rem;
+    font-weight:900;
+    margin-bottom:20px;
     line-height:1.2;
   }
 
   .overlay-sub {
-    font-size:1.4rem;
+    font-size:1.5rem;
     opacity:0.95;
-    font-weight:500;
+    font-weight:600;
   }
 
   h1 { font-size:2rem; margin-bottom:6px; }
@@ -103,13 +107,27 @@
   a:hover {
     text-decoration:underline;
   }
+
+  /* CONFETTI CANVAS */
+  #confetti-canvas {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    pointer-events:none;
+    z-index:20;
+  }
 </style>
 </head>
+
 <body>
+
+<canvas id="confetti-canvas"></canvas>
 
 <div class="card">
 
-  <!-- BIGGER, BOLDER OVERLAY -->
+  <!-- BIG BOLD OVERLAY -->
   <div class="overlay" id="overlay">
     <div class="overlay-title">
       Hope your birthday is <strong>plane awesome</strong> ✈️
@@ -159,6 +177,7 @@
 
   overlay.addEventListener("click", () => {
     overlay.classList.add("hidden");
+    startConfetti();
   });
 
   function copyCode() {
@@ -167,6 +186,52 @@
       document.getElementById("status").innerText = "Code copied!";
       setTimeout(() => { document.getElementById("status").innerText = ""; }, 2000);
     });
+  }
+
+  /* CONFETTI SCRIPT */
+  const confettiCanvas = document.getElementById("confetti-canvas");
+  const ctx = confettiCanvas.getContext("2d");
+  let confettiPieces = [];
+
+  function resizeCanvas() {
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  function startConfetti() {
+    for (let i = 0; i < 300; i++) {
+      confettiPieces.push({
+        x: Math.random() * confettiCanvas.width,
+        y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+        size: Math.random() * 8 + 4,
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+        speed: Math.random() * 3 + 2,
+        rotation: Math.random() * 360
+      });
+    }
+    requestAnimationFrame(updateConfetti);
+  }
+
+  function updateConfetti() {
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+    confettiPieces.forEach(p => {
+      p.y += p.speed;
+      p.rotation += 5;
+
+      if (p.y > confettiCanvas.height) p.y = -10;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      ctx.restore();
+    });
+
+    requestAnimationFrame(updateConfetti);
   }
 </script>
 
