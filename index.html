@@ -215,7 +215,7 @@
   function updateConfetti() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Spawn center confetti (temporary)
+    // CENTER CONFETTI (temporary)
     if (spawnCenter) {
       for (let i = 0; i < 8; i++) {
         confetti.push({
@@ -229,12 +229,13 @@
       }
     }
 
-    // Spawn side confetti (forever)
+    // SIDE CONFETTI (forever, touching edges)
     for (let i = 0; i < 2; i++) {
+      const leftSide = Math.random() * (canvas.width * 0.12); // left edge
+      const rightSide = canvas.width - Math.random() * (canvas.width * 0.12); // right edge
+
       confetti.push({
-        x: Math.random() < 0.5
-          ? Math.random() * canvas.width * 0.15
-          : canvas.width - Math.random() * canvas.width * 0.15,
+        x: Math.random() < 0.5 ? leftSide : rightSide,
         y: -10,
         size: Math.random() * 8 + 4,
         color: `hsl(${Math.random() * 360}, 100%, 60%)`,
